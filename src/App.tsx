@@ -30,9 +30,10 @@ function App() {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
+              fontWeight: "bold",
             }}
           >
-            {wl[0]}
+            {wl}
           </div>
         )),
       )}

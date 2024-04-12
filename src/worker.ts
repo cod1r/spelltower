@@ -31,8 +31,7 @@ function dfsDirections(
     row >= grid.length ||
     col >= grid[0].length ||
     grid[row][col] !== undefined ||
-    currentPath.find((e) => e[0] === row && e[1] === col) !== undefined ||
-    paths.length >= 500
+    currentPath.find((e) => e[0] === row && e[1] === col) !== undefined
   ) {
     return;
   }
@@ -126,6 +125,31 @@ function generateGrid(nrow: number, ncol: number) {
   }
   return grid;
 }
+function spiralWords(grid: Array<Array<string | undefined>>, words: Array<string>) {
+  let row = 0;
+  let col = 0;
+  let wordsConcatenated = words.reduce((a, e) => (a + e).toUpperCase());
+  let cellsFilled = 0;
+  let boundsSubtracted = 0;
+  while (cellsFilled < 13 * 9) {
+    grid[row][col] = wordsConcatenated[cellsFilled];
+    if (col === grid[0].length - 1 - boundsSubtracted && row !== grid.length - 1 - boundsSubtracted) {
+      row ++;
+    } else if (row === grid.length - 1 - boundsSubtracted && col !== boundsSubtracted) {
+      col --;
+    } else if (row === boundsSubtracted) {
+      col ++;
+    } else if (col === boundsSubtracted) {
+      row --;
+    }
+    if (row === boundsSubtracted && col === boundsSubtracted) {
+      row++;
+      col++;
+      boundsSubtracted++;
+    }
+    cellsFilled++;
+  }
+}
 fetch("/wordlist.txt")
   .then((res) => res.text())
   .then((words) => {
@@ -142,6 +166,9 @@ fetch("/wordlist.txt")
       finalResult: undefined,
     };
     console.log(finalGrouping.finalGroup.sort());
-    while (!placeWords(grid, finalGrouping.finalGroup, finalGrid));
-    postMessage(finalGrid.finalResult);
+    //while (!placeWords(grid, finalGrouping.finalGroup, finalGrid));
+    //postMessage(finalGrid.finalResult);
+    spiralWords(grid, finalGrouping.finalGroup);
+    console.log(grid);
+    postMessage(grid);
   });
