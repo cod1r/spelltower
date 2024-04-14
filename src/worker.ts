@@ -205,38 +205,16 @@ function placeWords(
     "finalResult",
     Array<Array<string | undefined>> | undefined
   >,
-  pushed: 'left' | 'right' | 'up' | 'down'
+  pushed: 'left' | 'right' | 'up' | 'down' | 'none'
 ): boolean {
-  debugger;
-
-  let row = 0;
-  let col = 0;
-  let cellsTouched = 0;
-  let boundsSubtracted = 0;
-  while (cellsTouched < 13 * 9) {
-    if (grid[row][col] === undefined) {
+  for (let r = 0; r < grid.length; ++r) {
+    for (let c = 0; c < grid[0].length; ++c) {
+      let visited: Array<[number, number]> = [];
+      dfsArea(grid, r, c, visited);
+      if (visited.length < words.reduce((a, e) => Math.min(a, e.length), Number.MAX_SAFE_INTEGER)) {
+        return false;
+      }
     }
-    if (
-      col === grid[0].length - 1 - boundsSubtracted &&
-      row !== grid.length - 1 - boundsSubtracted
-    ) {
-      row++;
-    } else if (
-      row === grid.length - 1 - boundsSubtracted &&
-      col !== boundsSubtracted
-    ) {
-      col--;
-    } else if (row === boundsSubtracted) {
-      col++;
-    } else if (col === boundsSubtracted) {
-      row--;
-    }
-    if (row === boundsSubtracted && col === boundsSubtracted) {
-      row++;
-      col++;
-      boundsSubtracted++;
-    }
-    cellsTouched++;
   }
   for (let r = 0; r < 13; ++r) {
     for (let c = 0; c < 9; ++c) {
@@ -417,6 +395,8 @@ fetch("/wordlist.txt")
       finalResult: undefined,
     };
     console.log(finalGrouping.finalGroup.sort());
-    while (!placeWords(grid, finalGrouping.finalGroup, [], finalGrid));
-    postMessage(finalGrid.finalResult);
+    //while (!placeWords(grid, finalGrouping.finalGroup, [], finalGrid, 'none'));
+    //postMessage(finalGrid.finalResult);
+    spiralWords(grid, finalGrouping.finalGroup);
+    postMessage(grid);
   });
