@@ -205,13 +205,16 @@ function placeWords(
     "finalResult",
     Array<Array<string | undefined>> | undefined
   >,
-  pushed: 'left' | 'right' | 'up' | 'down' | 'none'
+  pushed: "left" | "right" | "up" | "down" | "none",
 ): boolean {
   for (let r = 0; r < grid.length; ++r) {
     for (let c = 0; c < grid[0].length; ++c) {
       let visited: Array<[number, number]> = [];
       dfsArea(grid, r, c, visited);
-      if (visited.length < words.reduce((a, e) => Math.min(a, e.length), Number.MAX_SAFE_INTEGER)) {
+      if (
+        visited.length <
+        words.reduce((a, e) => Math.min(a, e.length), Number.MAX_SAFE_INTEGER)
+      ) {
         return false;
       }
     }
@@ -244,7 +247,7 @@ function placeWords(
             words.filter((w) => w !== word),
             wordGroupsClone,
             finalGrid,
-            'left'
+            "left",
           );
           if (validPlacement) {
             if (finalGrid.finalResult === undefined)
@@ -263,7 +266,7 @@ function placeWords(
             words.filter((w) => w !== word),
             wordGroupsClone,
             finalGrid,
-            'right'
+            "right",
           );
           if (validPlacement) {
             if (finalGrid.finalResult === undefined)
@@ -282,7 +285,7 @@ function placeWords(
             words.filter((w) => w !== word),
             wordGroupsClone,
             finalGrid,
-            'up'
+            "up",
           );
           if (validPlacement) {
             if (finalGrid.finalResult === undefined)
@@ -301,7 +304,7 @@ function placeWords(
             words.filter((w) => w !== word),
             wordGroupsClone,
             finalGrid,
-            'down'
+            "down",
           );
           if (validPlacement) {
             if (finalGrid.finalResult === undefined)
